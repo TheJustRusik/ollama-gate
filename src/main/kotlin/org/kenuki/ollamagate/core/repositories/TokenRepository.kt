@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface TokenRepository : JpaRepository<Token, String> {
     fun findAllByOwner(owner: User): List<Token>
+    fun existsTokenByToken(token: String): Boolean
 }

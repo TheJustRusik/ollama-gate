@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fragments Example</title>
+
+</head>
+<body>
+<div th:fragment="menu(token_head, current_page, admin)" class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <img class="bi me-2" height="32" src="/images/ollama_logo.png" alt="llama logo" />
+            <span class="fs-4" th:text="${token_head}"></span>
+        </a>
+
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link" th:classappend="${current_page == 'Home'} ? 'active'">Home</a></li>
+            <li class="nav-item" th:if="${admin}"><a href="/users" class="nav-link" th:classappend="${current_page == 'Users'} ? 'active'">Users</a></li>
+            <li class="nav-item"><a href="/about" class="nav-link" th:classappend="${current_page == 'About'} ? 'active'">About</a></li>
+        </ul>
+    </header>
+</div>
+<div th:fragment="footer" class="footer bg-body-tertiary">
+    <footer class="footer mt-auto py-3 bg-light bg-body-tertiary">
+        <div class="container">
+            <span class="text-muted">ollama-gate - project by TheJustRusik🔥 Feel free to contribute! <a href="https://github.com/TheJustRusik/ollama-gate">Project's GitHub</a></span>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

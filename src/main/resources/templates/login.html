@@ -3,16 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.84.0">
-    <title>Signin Template · Bootstrap v5.0</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
-
-
-
-    <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -31,19 +21,16 @@
         }
     </style>
 
-
-    <!-- Custom styles for this template -->
     <link href="/css/signin.css" rel="stylesheet">
 </head>
 <body class="text-center">
-
-<main class="form-signin">
-    <form th:action="@{/tokens/create}" method="post">
+<main class="form-signin flex-shrink-0">
+    <form th:action="@{/login}" method="post">
         <img class="mb-4" src="/images/ollama_logo.png" alt="" width="170" >
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
         <div class="form-floating">
-            <input type="text" class="form-control" placeholder="name@example.com" id="username" name="username">
+            <input type="text" class="form-control" placeholder="Username" id="username" name="username">
             <label for="username">Username</label>
         </div>
         <div class="form-floating">
@@ -52,11 +39,14 @@
         </div>
 
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <div th:if="${param.error}" class="alert alert-danger my-1" role="alert">
+            Wrong password or username
+        </div>
+        <div th:if="${param.logout}" class="alert alert-success my-1" role="alert">
+            Logged out
+        </div>
         <p class="mt-5 mb-3 text-muted">created by TheJustRusik🔥</p>
     </form>
 </main>
-
-
-
 </body>
 </html>

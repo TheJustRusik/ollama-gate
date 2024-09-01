@@ -27,8 +27,17 @@ class AppConfig (
         http
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/").authenticated()
-                    .requestMatchers("/foradmin").hasRole("ADMIN")
+                    .requestMatchers("/", "/about").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/password").authenticated()
+                    .requestMatchers(HttpMethod.GET,"/token").authenticated()
+                    .requestMatchers(
+                        "/swagger/**", "/swagger",
+                        "/swagger-ui/**", "/swagger-ui",
+                        "/ollama-api/**", "/ollama-api"
+                    ).authenticated()
+                    .requestMatchers(HttpMethod.POST ,"/token").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST ,"/token/delete").hasRole("ADMIN")
+                    .requestMatchers("/users", "/users/delete").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET,"/favicon.ico","/images/**", "/css/**", "/js/**").permitAll()
             }
             .formLogin{
@@ -37,6 +46,12 @@ class AppConfig (
                     .permitAll()
                     .defaultSuccessUrl("/", true)
                     .failureUrl("/login?error")
+            }
+            .logout{
+                it
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login?logout")
+                    .permitAll()
             }
         return http.build()
     }

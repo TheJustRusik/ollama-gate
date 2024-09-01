@@ -13,3 +13,9 @@ spring:
 llama:
   url: http://localhost:11434
   model: llama3.1
+springdoc:
+  api-docs:
+    enabled: true
+    path: /ollama-api
+  swagger-ui:
+    path: /swagger

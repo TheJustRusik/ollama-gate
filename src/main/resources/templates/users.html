@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column h-100">
+<div style="flex: 1">
+    <div th:insert="~{fragments :: menu(${head_hello}, 'Users', ${admin})}"></div>
+
+    <div class="container">
+        <form th:action="@{/users}" method="post">
+            <h1 class="h3 mb-3 fw-normal">Create new user</h1>
+            <div style="display: flex" class="gap-4">
+                <div class="form-floating w-75">
+                    <input type="text" class="form-control" placeholder="Username" id="username" name="username">
+                    <label for="username">Username</label>
+                </div>
+                <div class="form-floating w-75" >
+                    <input type="password" class="form-control" placeholder="Password" id="password" name="password">
+                    <label for="password">Password</label>
+                </div>
+                <div class="form-floating w-75" >
+                    <input type="password" class="form-control" placeholder="Password" id="password2" name="password2">
+                    <label for="password2">Repeat password</label>
+                </div>
+                <select class="form-select w-25" aria-label="Default select example" id="role" name="role">
+                    <option value="USER" selected>USER</option>
+                    <option value="ADMIN">ADMIN</option>
+                </select>
+                <button type="submit" class="btn btn-success">Create</button>
+            </div>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Role</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user, iter : ${users}">
+                <th scope="row" th:text="${iter.index + 1}"></th>
+                <td th:text="${user.getUsername()}"></td>
+                <td th:text="${user.getRole().name()}"></td>
+                <td>
+                    <form th:action="@{/users/delete}" method="post">
+                        <input type="hidden" name="username" th:value="${user.getUsername()}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div th:insert="~{fragments::footer}"></div>
+</body>
+</html>

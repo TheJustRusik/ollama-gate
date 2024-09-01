@@ -12,6 +12,6 @@ class Token (
     var description: String,
     @Column(length = 255)
     var token: String,
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     var owner: User
 )

@@ -12,7 +12,7 @@ class User (
     var password: String,
     @Enumerated(EnumType.ORDINAL)
     var role: Roles = Roles.USER,
-    @OneToMany
+    @OneToMany(mappedBy = "owner", cascade = [(CascadeType.REMOVE)], orphanRemoval = true)
     var tokens: MutableSet<Token>?
 )
 
