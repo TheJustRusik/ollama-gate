@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: ollama-gate
+  datasource:
+    url: jdbc:h2:file:./ollama-gate-data
+    driver-class-name: org.h2.Driver
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+llama:
+  url: http://localhost:11434
+  model: llama3.1
