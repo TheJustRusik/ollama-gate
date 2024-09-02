@@ -27,7 +27,7 @@ class UsersService (
             createUserDTO.username,
             passwordEncoder.encode(createUserDTO.password),
             when (createUserDTO.role) {
-                "ROLE_ADMIN" -> Roles.ADMIN
+                "ADMIN" -> Roles.ADMIN
                 else -> Roles.USER
             },
             mutableSetOf()

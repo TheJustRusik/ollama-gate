@@ -19,10 +19,16 @@
         <p class="lead">Этот проект создан специально для предоставления контролируемого доступа к ollama нейросети. Для доступа к нейросетям нужно использовать токен который вы добавите в header к вашему post запросу для обращения к ollama</p>
         <p>Документация к эндпоинтам <a href="/swagger-ui/index.html">находиться в Swagger</a></p>
     </div>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Change Password
-    </button>
-    <a href="#" class="btn btn-secondary" th:href="@{/logout}">Logout</a>
+    <div class="d-flex gap-1">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Change Password
+        </button>
+        <form th:action="@{/logout}" method="post">
+            <button class="btn btn-secondary" type="submit" >Logout</button>
+        </form>
+    </div>
+
+<!--    <a href="#" class="btn btn-secondary" th:href="@{/logout}">Logout</a>-->
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">

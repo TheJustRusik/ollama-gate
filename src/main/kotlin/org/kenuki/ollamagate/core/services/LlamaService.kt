@@ -7,6 +7,7 @@ import org.kenuki.ollamagate.web.dtos.requests.GenerateDTO
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.http.HttpEntity
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 
@@ -19,7 +20,7 @@ class LlamaService (
     @Value("\${llama.url}")
     val llamaUrl: String
 ){
-    fun llamaGenerate(generateDTO: GenerateDTO): LlamaGenerateResponse {
+    fun llamaGenerate(generateDTO: GenerateDTO): ResponseEntity<LlamaGenerateResponse> {
         val httpEntity = HttpEntity(
             LLamaGenerateRequest(
                 llamaModel,
@@ -29,6 +30,7 @@ class LlamaService (
                 generateDTO.options
             )
         )
-        return restTemplate.postForEntity("$llamaUrl/api/generate", httpEntity, LlamaGenerateResponse::class.java).body ?: throw Exception("No response")
+        val body = restTemplate.postForEntity("$llamaUrl/api/generate", httpEntity, LlamaGenerateResponse::class.java).body ?: throw Exception("No response")
+        return ResponseEntity.ok(body)
     }
 }

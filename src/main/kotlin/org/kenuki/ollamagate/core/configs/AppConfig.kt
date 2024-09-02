@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.filter.RequestContextFilter
 
 
 @Configuration
@@ -23,22 +24,24 @@ class AppConfig (
     }
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    fun securityFilterChain(http: HttpSecurity, requestContextFilter: RequestContextFilter): SecurityFilterChain {
+
         http
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/", "/about").authenticated()
                     .requestMatchers(HttpMethod.POST, "/password").authenticated()
                     .requestMatchers(HttpMethod.GET,"/token").authenticated()
                     .requestMatchers(
                         "/swagger/**", "/swagger",
                         "/swagger-ui/**", "/swagger-ui",
-                        "/ollama-api/**", "/ollama-api"
+                        "/ollama-api/**", "/ollama-api",
+                        "/", "/about"
                     ).authenticated()
-                    .requestMatchers(HttpMethod.POST ,"/token").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.POST ,"/token/delete").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST ,"/token/delete", "/token").hasRole("ADMIN")
                     .requestMatchers("/users", "/users/delete").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET,"/favicon.ico","/images/**", "/css/**", "/js/**").permitAll()
+                    .requestMatchers("/api/**").permitAll()
+                    .anyRequest().denyAll()
             }
             .formLogin{
                 it
@@ -49,9 +52,12 @@ class AppConfig (
             }
             .logout{
                 it
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/login?logout")
                     .permitAll()
+                    .logoutSuccessUrl("/login?logout")
+            }
+            .csrf{
+                it
+                    .ignoringRequestMatchers("/api/**")
             }
         return http.build()
     }
