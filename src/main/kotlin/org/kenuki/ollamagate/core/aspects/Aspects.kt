@@ -1,18 +1,18 @@
 package org.kenuki.ollamagate.core.aspects
 
-import jakarta.servlet.http.HttpServletRequest
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 import org.kenuki.ollamagate.core.exceptions.AuthorizationException
-import org.kenuki.ollamagate.core.repositories.UserRepository
+import org.kenuki.ollamagate.core.repositories.TokenRepository
 import org.kenuki.ollamagate.core.services.TokenService
 import org.springframework.http.HttpHeaders
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.ui.Model
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
-import org.thymeleaf.extras.springsecurity6.util.SpringVersionSpecificUtils.getHttpServletRequest
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
@@ -24,9 +24,9 @@ annotation class Secured
 
 @Aspect
 @Component
-class Aspects (
-    val userRepository: UserRepository,
-    val tokenService: TokenService
+class Aspects(
+    val tokenService: TokenService,
+    val tokenRepository: TokenRepository
 ){
     @Before("@annotation(AddHeadHelloToModel) && args(model, ..)")
     fun addUserDetails(model: Model) {
@@ -49,5 +49,16 @@ class Aspects (
 
         if (!tokenService.verifyToken(token))
             throw AuthorizationException()
+
+        val tokenEntity = tokenRepository.getTokenByToken(token)
+
+        val context = SecurityContextHolder.createEmptyContext().apply {
+            authentication = UsernamePasswordAuthenticationToken(
+                tokenEntity!!.owner.username, null,
+                listOf(SimpleGrantedAuthority("???"))//TODO
+            )
+        }
+
+        SecurityContextHolder.setContext(context)
     }
 }
