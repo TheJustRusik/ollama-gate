@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "Generates llama response for \"prompt\" wouldn't save chat history. At least should have \"prompt\" property")
 data class GenerateDTO (
+    @Schema(description = "Your model name", example = "llama3.1")
+    val model: String,
     @Schema(description = "Your question for llama", example = "Generate python code:\ndef sum(a, b):")
     val prompt: String,
     @Schema(

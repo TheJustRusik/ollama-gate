@@ -4,4 +4,5 @@ data class CreateTokenDTO(
     val username: String,
     val title: String,
     val description: String,
+    val models: String
 )

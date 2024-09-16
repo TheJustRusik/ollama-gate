@@ -11,8 +11,7 @@ spring:
       ddl-auto: update
     open-in-view: true
 llama:
-  url: http://localhost:11434
-  model: llama3.1
+  url: ${LLAMA_URL:http://localhost:11434}
 springdoc:
   api-docs:
     enabled: true

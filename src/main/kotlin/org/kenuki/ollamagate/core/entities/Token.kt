@@ -15,7 +15,24 @@ class Token (
     @ManyToOne
     var owner: User,
     @Column(columnDefinition = "bigint")
-    val secondSpent : Long = 0,
+    var millisSpent : Long = 0,
     @Column(columnDefinition = "bigint")
-    val usedTimes : Long = 0
-)
+    var usedTimes : Long = 0,
+    @Column(columnDefinition = "text")
+    var models: String,
+) {
+    val timeSpentFormatted: String
+        get() {
+            val days = millisSpent / (24 * 60 * 60 * 1000)
+            val hours = millisSpent / (60 * 60 * 1000) % 60
+            val minutes = millisSpent / (60 * 1000) % 60
+            val seconds = millisSpent / 1000 % 60
+
+            return when {
+                days > 0 -> String.format("%dd %dh %dm %ds", days, hours, minutes, seconds)
+                hours > 0 -> String.format("%dh %dm %ds", hours, minutes, seconds)
+                minutes > 0 -> String.format("%dm %ds", minutes, seconds)
+                else -> String.format("%ds", seconds)
+            }
+        }
+}

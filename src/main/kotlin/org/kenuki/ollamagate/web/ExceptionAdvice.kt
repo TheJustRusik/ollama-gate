@@ -1,6 +1,7 @@
 package org.kenuki.ollamagate.web
 
 import org.kenuki.ollamagate.core.exceptions.AuthorizationException
+import org.kenuki.ollamagate.core.exceptions.OllamaException
 import org.kenuki.ollamagate.web.dtos.responses.ExceptionResponseDTO
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,6 +18,11 @@ class ExceptionAdvice {
     @ExceptionHandler(AuthorizationException::class)
     fun handleAuthorizationException(e: Exception): ResponseEntity<ExceptionResponseDTO> {
         val responseDTO = ExceptionResponseDTO("Not authorized")
+        return ResponseEntity(responseDTO, HttpStatus.UNAUTHORIZED)
+    }
+    @ExceptionHandler(OllamaException::class)
+    fun handleOllamaException(e: Exception): ResponseEntity<ExceptionResponseDTO> {
+        val responseDTO = ExceptionResponseDTO("Ollama exception: ${e.message}")
         return ResponseEntity(responseDTO, HttpStatus.UNAUTHORIZED)
     }
 }

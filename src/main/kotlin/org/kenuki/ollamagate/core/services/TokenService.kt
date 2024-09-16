@@ -16,12 +16,13 @@ class TokenService (
 ) {
     @Transactional
     fun createToken(createTokenDTO: CreateTokenDTO) : String {
-        val user = userRepository.findUserByUsername(createTokenDTO.username)
+        val user = userRepository.findUserByUsername(createTokenDTO.username)!!
         val token = Token(
             createTokenDTO.title,
             createTokenDTO.description,
             generateToken(),
-            user!!
+            user,
+            models = createTokenDTO.models
         )
         tokenRepository.save(token)
         return "/"

@@ -27,9 +27,13 @@
                     <input type="text" class="form-control" placeholder="Password" id="description" name="description">
                     <label for="description">Description</label>
                 </div>
-                <select class="form-select w-25" aria-label="Default select example" id="username" name="username">
+                <select class="form-select w-25" aria-label="Select user" id="username" name="username">
                     <option th:value="${user.getUsername()}" th:each="user : ${users}" th:text="${user.getUsername()}"></option>
                 </select>
+                <div class="form-floating w-100" >
+                    <input type="text" class="form-control" placeholder="separate by space" id="models" name="models">
+                    <label for="models">Models</label>
+                </div>
                 <button type="submit" class="btn btn-success">Create</button>
             </div>
         </form>
@@ -40,9 +44,12 @@
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
                 <th scope="col">Description</th>
-                <th scope="col">Owner</th>
-                <th scope="col">token</th>
-                <th scope="col">Actions</th>
+                <th scope="col" th:if="${admin}">Owner</th>
+                <th scope="col">Used</th>
+                <th scope="col">Time</th>
+                <th scope="col">Token</th>
+                <th scope="col">Models</th>
+                <th scope="col" th:if="${admin}">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -50,9 +57,12 @@
                 <th scope="row" th:text="${iter.index + 1}"></th>
                 <td th:text="${token.getTitle()}"></td>
                 <td th:text="${token.getDescription()}"></td>
-                <td th:text="${token.getOwner().getUsername()}"></td>
+                <td th:text="${token.getOwner().getUsername()}" th:if="${admin}"></td>
+                <th scope="col" th:text="${token.getUsedTimes()}"></th>
+                <th scope="col" th:text="${token.getTimeSpentFormatted()}">Time</th>
                 <td th:text="${token.getToken()}"></td>
-                <td>
+                <td th:text="${token.getModels()}"></td>
+                <td th:if="${admin}">
                     <form th:action="@{/token/delete}" method="post">
                         <input type="hidden" name="title" th:value="${token.title}">
                         <button type="submit" class="btn btn-danger">Delete</button>

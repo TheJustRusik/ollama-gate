@@ -1,3 +1,4 @@
 package org.kenuki.ollamagate.core.exceptions
 
-class AuthorizationException : Exception()
+class AuthorizationException(text: String) : Exception(text)
+class OllamaException(text: String) : Exception(text)
